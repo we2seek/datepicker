@@ -1,0 +1,37 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=cyrillic-ext';
+
+$font-stack: 14px "Open Sans", sans-serif;
+$font-color: #333;
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+  font: $font-stack;
+  color: $font-color;
+
+}
+
+table {
+    margin-bottom: 15px;
+    font-family: monospace;
+    font-size: small;
+}
+table th {
+    text-align: left;
+    font-weight: normal;
+    
+}
+
+.pmu-instance {
+    background-color: #333;
+}
+
+.calendar {
+    width: 200px;
+}
+
+.calendar-tricky {
+    margin-top: 22px;
+}

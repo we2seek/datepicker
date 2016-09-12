@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello from kitty!</title>
+    <link rel="icon" href="favicon.gif" type="image/gif" sizes="16x16">
+    <link rel="stylesheet" href="./bower_components/pickmeup/css/pickmeup.css">
+    <link rel="stylesheet" href="./css/main.css">
+
+</head>
+<body ng-controller="MainController">
+    <header>
+        <h2 ng-bind="header">Hello, Kitty!</h2>
+    </header>
+    <table>
+        <tr>
+            <th>dates:</th>
+            <td>{{dates}}</td>
+        </tr>
+        <tr>
+            <th>datesFormatted:</th>
+            <td>{{datesFormatted}}</td>
+        </tr>
+        <tr>
+            <th>datesModel:</th>
+            <td>{{datesModel}}</td>
+        </tr>
+    </table>
+    
+    <input type="text" ng-click="calendar.show();" ng-model="datesModel" class="calendar">
+    <button ng-click="calendar.show();">{{buttonCaption}}</button>
+    <div class="hidden-calendar" ></div>
+    <script src="./bower_components/angular/angular.min.js"></script>
+    <script src="./bower_components/pickmeup/js/pickmeup.js"></script>
+    <script src="./js/app.js"></script>
+</body>
+</html>
