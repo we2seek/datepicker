@@ -1,10 +1,11 @@
 'use strict';
 
 (function(){
-    var app = angular.module('myApp', []);
+    var app = angular.module('myApp', ['ui.mask']);
 
-    app.controller('MainController', function($scope){
+    app.controller('MainController', function($scope, $filter){
         var $scope = $scope,
+        tzOffset = getTZOffset(),
         options = {
             format: 'Y-m-d',
             mode: 'range',
@@ -21,25 +22,33 @@
         };
 
         $scope.calendar.input.addEventListener('pickmeup-change', function(e){
-            getDatesFromCalendar();
+            $scope.dates = pickmeup($scope.calendar.input).get_date();
         });
 
         $scope.calendar.input.addEventListener('pickmeup-show', function(e){
-            $scope.buttonCaption = 'Hide';
-            console.log('Show calendar: %s', $scope.buttonCaption);
         });
 
         $scope.calendar.input.addEventListener('pickmeup-hide', function(e){
-            $scope.buttonCaption = 'Calendar';
-            console.log('Hide calendar: %s', $scope.buttonCaption);
+            setTimeout(function(){
+                $scope.$apply(function(){
+                    if ($scope.datesModel == '') {
+                        $scope.dates = pickmeup($scope.calendar.input).get_date();
+                    } else {
+                        $scope.dates = parse($scope.datesModel);
+                    }
+                });
+            }, 50);
         });
 
-
-        pickmeup($scope.calendar.input, options);
-        getDatesFromCalendar();
-
-        $scope.$watch(function(){ return $scope.datesModel; }, function(newValue, oldValue){
-            console.log('newValue: %s, oldValue: %s', newValue, oldValue);
+        
+        $scope.$watch(function(){ return $scope.dates; }, function(newValue, oldValue){
+            
+            console.log('newValue: %s, oldValue: %s, tz: %s', newValue, oldValue, tzOffset);
+            if (typeof newValue !== 'undefined') {
+                $scope.datesFormatted = pickmeup($scope.calendar.input).get_date(true);
+                $scope.datesModel = $filter('date')($scope.dates[0], 'ddMMyyyy', tzOffset) + $filter('date')($scope.dates[1], 'ddMMyyyy', tzOffset);
+                console.log($scope);
+            }
         });
 
         function showCalendar (){
@@ -56,6 +65,26 @@
                 console.log('mode isn\'t \'range\'');
             }
         }
+
+        function getTZOffset(){
+            var offset = new Date().getTimezoneOffset() * -1;
+            var sign = offset < 0 ? '-' : '+';
+            var hours = Math.abs(offset / 60);
+            var minutes = Math.abs(offset % 60);
+
+            if (hours < 10) { hours = '0' + hours;}
+            if (minutes < 10) { minutes = '0' + minutes;}
+
+            return sign + hours + minutes;
+        }
+
+        // ddMMyyyyddMMyyyy
+        function parse(strDates){
+            return [new Date(), new Date()];
+        }
+
+        pickmeup($scope.calendar.input, options);
+        $scope.dates = pickmeup($scope.calendar.input).get_date();
 
     });
 })();

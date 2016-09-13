@@ -27,11 +27,13 @@
         </tr>
     </table>
     
-    <input type="text" ng-click="calendar.show();" ng-model="datesModel" class="calendar">
+    <input type="text" ng-click="calendar.show();" ng-model="datesModel" class="calendar" ui-mask="99.99.9999 — 99.99.9999" ui-mask-placeholder ui-mask-placeholder-char="_">
     <button ng-click="calendar.show();">{{buttonCaption}}</button>
     <div class="hidden-calendar" ></div>
+    
     <script src="./bower_components/angular/angular.min.js"></script>
     <script src="./bower_components/pickmeup/js/pickmeup.js"></script>
+    <script src="./bower_components/angular-ui-mask/dist/mask.min.js"></script>
     <script src="./js/app.js"></script>
 </body>
 </html>
